@@ -1,1 +1,214 @@
 # FB-Insta-Post-Automation
+# FB & Insta Post Automation
+
+An automated n8n workflow that generates AI-powered social media content for Facebook, Instagram, Twitter/X, and Telegram. The workflow uses Google Gemini to create festival-themed advertisements for Indian ethnic wear, complete with engaging copy and strategic hashtags.
+
+## 🌟 Features
+
+- **Automated Scheduling**: Runs daily at 11 AM to maintain consistent posting
+- **AI-Powered Content Generation**: Uses Google Gemini to analyze product images and create compelling ad copy
+- **Multi-Platform Publishing**: Posts simultaneously to Facebook, Instagram, Twitter/X, and Telegram
+- **Smart Tracking**: Marks processed images in Google Sheets to avoid duplicates
+- **Festival-Focused**: Specializes in Indian ethnic wear marketing with cultural context
+
+## 📋 Prerequisites
+
+- n8n instance (self-hosted or cloud)
+- Google Sheets account with API access
+- Facebook Graph API credentials
+- Instagram posting service (Blotoato or similar)
+- Twitter/X API credentials
+- Telegram Bot API credentials
+- Google Gemini API key
+
+## 🔧 Required Credentials
+
+1. **Google Sheets OAuth2** - For reading/updating image links and tracking
+2. **Facebook Graph API** - For posting to Facebook pages
+3. **Blotoato API** (or similar) - For Instagram posting
+4. **Twitter OAuth2** - For posting tweets
+5. **Telegram Bot API** - For sending photo messages
+6. **Google Gemini (PaLM) API** - For AI content generation
+
+## 📊 Google Sheets Setup
+
+Create a Google Sheet with the following columns:
+
+| Column Name | Description |
+|-------------|-------------|
+| Image Url | Direct link to product image |
+| Posted | Status field (marked "done" after posting) |
+| Ad Generated | Status field (marked "complete" after AI generation) |
+| row_number | Auto-generated row identifier |
+
+**Sheet URL Format**: `https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?gid=0#gid=0`
+
+## 🚀 Installation
+
+1. **Import Workflow**
+   - Open your n8n instance
+   - Click "Import from File" or "Import from URL"
+   - Upload the `FB & Insta Post Automation.json` file
+
+2. **Configure Credentials**
+   - Set up all required API credentials in n8n
+   - Update credential IDs in the workflow nodes
+
+3. **Update Placeholders**
+   
+   Replace these placeholder values in the workflow:
+   
+   - `<__PLACEHOLDER_VALUE__Blotoato API URL for Instagram posting__>` - Your Instagram API endpoint
+   - `<__PLACEHOLDER_VALUE__Blotoato API Key__>` - Your Instagram API key
+   - `<__PLACEHOLDER_VALUE__Facebook Page ID__>` - Your Facebook Page ID
+
+4. **Update Google Sheets URL**
+   - Replace the sheet URL in all Google Sheets nodes with your actual spreadsheet URL
+
+5. **Activate Workflow**
+   - Test the workflow manually first
+   - Enable the Schedule Trigger for automated daily runs
+
+## 🔄 Workflow Process
+
+```mermaid
+graph LR
+    A[Schedule Trigger] --> B[Load Config]
+    B --> C[Get Images from Sheet]
+    C --> D[Filter Unposted]
+    D --> E[Process One Image]
+    E --> F[Download Image]
+    F --> G[Generate Ad Copy with AI]
+    G --> H[Mark as Generated]
+    H --> I[Merge Copy + Image]
+    I --> J[Post to Twitter]
+    J --> K[Post to Facebook]
+    K --> L[Post to Instagram]
+    L --> M[Send to Telegram]
+    M --> N[Mark as Posted]
+```
+
+## 🎨 AI Prompt Engineering
+
+The workflow uses a sophisticated prompt system for Google Gemini:
+
+- **Hook-Story-Offer (HSO) Framework**
+- **Festival-focused messaging** (Diwali, Navratri, Eid, etc.)
+- **Emotional and cultural connection**
+- **Strategic emoji usage**
+- **Hashtag optimization**
+- **Clear call-to-action**
+
+### Example Output Format
+
+```
+✨ This Festive Season, Embrace Timeless Elegance! ✨
+
+Introducing our stunning Kalamkari Kurta Collection...
+
+Perfect for:
+🪔 Diwali celebrations
+🎉 Family gatherings
+💫 Festive parties
+
+🎊 FESTIVE SPECIAL OFFER 🎊
+40% OFF + FREE Shipping
+
+👉 Shop Now - Link in Bio
+💬 DM us to order
+
+#KalamkariKurta #FestiveWear #EthnicFashion
+```
+
+## ⚙️ Configuration Options
+
+### Schedule Trigger
+- **Default**: Daily at 11:00 AM
+- **Customizable**: Modify `triggerAtHour` parameter
+
+### Image Processing
+- **Limit**: Processes one image per run (configurable)
+- **Filter**: Only processes unposted images
+
+### AI Model Settings
+- **Model**: Google Gemini
+- **Temperature**: 0.9 (creative output)
+- **Top K**: 40
+- **Top P**: 0.95
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **Images Not Posting**
+   - Verify Google Sheets URL is correct
+   - Check that images have valid URLs
+   - Ensure "Posted" column is empty for new images
+
+2. **AI Generation Fails**
+   - Verify Gemini API key is valid
+   - Check API quota limits
+   - Review image URL accessibility
+
+3. **Social Media Post Errors**
+   - Confirm all API credentials are active
+   - Check platform-specific API limits
+   - Verify image format compatibility
+
+### Debug Mode
+
+Enable execution logs in n8n to track workflow progress:
+- Settings → Executions → Save execution data
+
+## 📝 Customization
+
+### Modify AI Prompt
+Edit the `systemMessage` in the "Generate Post with Gemini" node to customize:
+- Tone and style
+- Target audience
+- Product categories
+- Festival focus
+
+### Add More Platforms
+Duplicate posting nodes and add credentials for:
+- LinkedIn
+- Pinterest
+- WhatsApp Business API
+
+### Change Posting Frequency
+Modify the Schedule Trigger interval:
+```json
+"interval": [
+  {
+    "triggerAtHour": 11,
+    "triggerAtMinute": 0
+  }
+]
+```
+
+## 📄 License
+
+This workflow is provided as-is for automation purposes. Ensure compliance with each platform's API terms of service.
+
+## 🤝 Contributing
+
+Feel free to submit issues or pull requests to improve this workflow!
+
+## ⚠️ Important Notes
+
+- Always test with a small batch before full automation
+- Monitor API rate limits across all platforms
+- Keep backup copies of your Google Sheets
+- Review generated content for brand alignment
+- Ensure image rights and permissions
+
+## 📞 Support
+
+For issues related to:
+- **n8n**: Visit [n8n Community](https://community.n8n.io/)
+- **API Services**: Contact respective service providers
+- **Workflow Logic**: Open an issue in this repository
+
+---
+
+**Made with ❤️ for automated social media marketing**
