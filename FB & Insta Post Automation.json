@@ -1,0 +1,654 @@
+{
+  "name": "FB & Insta Post Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 11
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -192,
+        2800
+      ],
+      "id": "adef3bba-3a24-4412-a09e-84cbace753ba",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "blotoatoApiUrl",
+              "value": "<__PLACEHOLDER_VALUE__Blotoato API URL for Instagram posting__>",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "blotoatoApiKey",
+              "value": "<__PLACEHOLDER_VALUE__Blotoato API Key__>",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "68acc312-3226-4c03-bedc-1c7aab33ff8e",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        176,
+        2800
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1m9tw9sy0FH84Yudo9fx8OXs8vGd60n-izibTZb6ndVw/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1m9tw9sy0FH84Yudo9fx8OXs8vGd60n-izibTZb6ndVw/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "id": "0f5ff2fa-ddb0-4b49-9345-4b17f55d5f92",
+      "name": "Get Picture Links from Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -160,
+        3168
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "BNEpjbB7pTSD1oTw",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['Image Url'] || $json[' Image Url'] }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "9b516f35-84bc-48f2-87a5-a9ea7569f4a1",
+      "name": "Download Picture",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        768,
+        3168
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyze this image and create a festival-themed ad for Indian ethnic wear: {{ $json }}",
+        "options": {
+          "systemMessage": "You are an elite social media advertising copywriter specializing in Indian ethnic wear and festival-themed fashion promotions for Facebook and Instagram.\n\nYour task is to analyze the provided image and create a compelling advertisement post that celebrates Indian festivals, traditional wear, and cultural fashion.\n\n## FRAMEWORK: Hook-Story-Offer (HSO)\n\n### 1. HOOK (First 1-2 sentences)\n- Create an attention-grabbing headline that connects with Indian festivals, celebrations, or cultural moments\n- Use pattern interrupts: questions, bold statements, festive excitement, or relatable fashion desires\n- Examples: \"This Diwali, Shine Brighter Than Ever!\", \"Why Everyone's Obsessed With This Festive Collection\", \"The Secret to Looking Stunning This Wedding Season\"\n\n### 2. STORY (Middle section)\n- Tell an emotional, relatable story that connects with Indian cultural values and celebrations\n- Highlight the craftsmanship, tradition, and modern appeal\n- Address desires for looking beautiful during festivals and special occasions\n- Build credibility through quality, authenticity, and style\n- Create urgency around festival seasons and limited collections\n\n### 3. OFFER (Final section)\n- Present a clear, irresistible promotional offer with specific benefits\n- Include a strong, action-oriented CTA (Call-to-Action)\n- Examples: \"Shop Now\", \"Limited Festive Offer - 40% Off\", \"Order Today\", \"DM to Order\", \"Click Link in Bio\"\n- Add scarcity or time-sensitivity tied to festivals\n\n## STYLE GUIDELINES\n\n### Emotional & Cultural Connection\n- Tap into emotions: joy, celebration, tradition, pride, belonging, festive excitement\n- Use \"you\" language to make it personal\n- Connect fashion with festivals, weddings, and special occasions\n- Celebrate Indian heritage and craftsmanship\n\n### Engaging Headlines\n- Reference festivals: Diwali, Navratri, Durga Puja, Eid, Holi, Raksha Bandhan, etc.\n- Create excitement: \"Festive Collection Alert!\", \"New Arrival!\", \"Limited Edition!\"\n- Make bold style statements: \"Elegance Redefined\", \"Traditional Meets Modern\"\n\n### Visual & Formatting\n- Use emojis strategically: âœ¨ ðŸª” ðŸŽ‰ ðŸ’« ðŸŒ¸ ðŸ›ï¸ ðŸ‘— ðŸ’ ðŸŽŠ\n- Include bullet points for features and offers\n- Make the offer stand out visually\n- Keep paragraphs short and scannable\n\n### SEO & Discoverability\n- Include 3-5 relevant hashtags related to Indian fashion, festivals, and ethnic wear\n- Use keywords naturally: kurta, saree, lehenga, ethnic wear, festive collection, etc.\n- Target specific audience segments: festival shoppers, wedding guests, fashion enthusiasts\n\n## EXAMPLE (Kalamkari Kurta Style)\n\n\"âœ¨ This Festive Season, Embrace Timeless Elegance! âœ¨\n\nIntroducing our stunning Kalamkari Kurta Collection - where traditional artistry meets contemporary style. Each piece is handcrafted with intricate Kalamkari prints that tell a story of Indian heritage.\n\nPerfect for:\nðŸª” Diwali celebrations\nðŸŽ‰ Family gatherings\nðŸ’« Festive parties\nðŸŒ¸ Special occasions\n\nWhy You'll Love It:\nâœ“ Premium cotton fabric for all-day comfort\nâœ“ Authentic Kalamkari hand-block prints\nâœ“ Versatile styling options\nâœ“ Available in multiple colors\nâœ“ Easy care and long-lasting\n\nðŸŽŠ FESTIVE SPECIAL OFFER ðŸŽŠ\n40% OFF + FREE Shipping\nLimited Stock Available!\n\nðŸ‘‰ Shop Now - Link in Bio\nðŸ’¬ DM us to order or for more details\nðŸ“¦ Fast delivery across India\n\n#KalamkariKurta #FestiveWear #EthnicFashion #DiwaliCollection #IndianEthnicWear\"\n\n## KEY ELEMENTS TO INCLUDE\n- Festival or occasion reference\n- Product highlights with bullet points\n- Clear promotional offer (discount percentage, free shipping, etc.)\n- Multiple CTAs (Shop Now, DM, Link in Bio)\n- Relevant emojis throughout\n- 3-5 hashtags\n- Urgency (Limited Stock, Festive Offer, etc.)\n\n## OUTPUT FORMAT\nReturn ONLY the final ad copy with emojis, bullet points, offers, and hashtags. No explanations, no meta-commentary, just the ready-to-post advertisement in the Kalamkari Kurta example style."
+        }
+      },
+      "id": "42bf450c-4509-4c43-bffc-fb5e8275af4b",
+      "name": "Generate Post with Gemini",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        1008,
+        3328
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.9,
+          "topK": 40,
+          "topP": 0.95
+        }
+      },
+      "id": "c7783032-9bee-45ad-ba37-07c8684febfa",
+      "name": "Google Gemini Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1008,
+        3584
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "7ll6zwGQuB1I2c5N",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v13.0",
+        "node": "<__PLACEHOLDER_VALUE__Facebook Page ID__>",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json.output }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "54fd5ab3-7376-4b46-bdda-912525d72b5c",
+      "name": "Post to Facebook",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        2896
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "APhQPoAypPJGys0y",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Configuration').first().json.blotoatoApiUrl }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $('Workflow Configuration').first().json.blotoatoApiKey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "caption",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "image",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "28815689-6349-4b38-a1cb-e92965fbb740",
+      "name": "Post to Instagram via Blotoato",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2208,
+        2896
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "tNAah9Kh9mh3FuXw",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "id": "b41104a5-a78b-46a6-a6f9-fde9cc48a0a4",
+      "name": "Merge Ad Copy with Image",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1744,
+        3184
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "591e32bf-aa72-4173-a848-22418b105e40",
+      "name": "Process One Image Only",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        400,
+        3168
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json[' Posted'] }}",
+              "operator": {
+                "type": "string",
+                "operation": "empty"
+              }
+            },
+            {
+              "id": "id-2",
+              "leftValue": "={{ $json[' Ad Generated'] }}",
+              "operator": {
+                "type": "string",
+                "operation": "empty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4aef456d-517c-474b-a578-9a3c8f171334",
+      "name": "Filter Out Posted Images",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        128,
+        3168
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "https://docs.google.com/spreadsheets/d/1m9tw9sy0FH84Yudo9fx8OXs8vGd60n-izibTZb6ndVw/edit?gid=0#gid=0"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "url",
+          "value": "https://docs.google.com/spreadsheets/d/1m9tw9sy0FH84Yudo9fx8OXs8vGd60n-izibTZb6ndVw/edit?gid=0#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            " Posted": "done"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": " Posted",
+              "displayName": " Posted",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f224a1a5-25f5-48f3-b06d-4f13cc2e23b6",
+      "name": "Mark as Posted",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2112,
+        3520
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "BNEpjbB7pTSD1oTw",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "https://docs.google.com/spreadsheets/d/1m9tw9sy0FH84Yudo9fx8OXs8vGd60n-izibTZb6ndVw/edit?gid=0#gid=0"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "url",
+          "value": "https://docs.google.com/spreadsheets/d/1m9tw9sy0FH84Yudo9fx8OXs8vGd60n-izibTZb6ndVw/edit?gid=0#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            " Ad Generated": "complete",
+            "row_number": "={{ $('Get Picture Links from Sheet').item.json.row_number }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": " Image Url",
+              "displayName": " Image Url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Posted",
+              "displayName": " Posted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Ad Generated",
+              "displayName": " Ad Generated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "output",
+              "displayName": "output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "b97c35e0-5375-469b-9ee1-35db05e01caa",
+      "name": "Mark Ad as Generated",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1552,
+        3024
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "BNEpjbB7pTSD1oTw",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        2160,
+        3184
+      ],
+      "id": "2acf0935-a5b0-48f9-be8b-3fb41bbf1e45",
+      "name": "Create Tweet",
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "vydEIGpaIQWvKj1F",
+          "name": "X account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2480,
+        2896
+      ],
+      "id": "554f4637-9784-467b-aa09-96349468c960",
+      "name": "Send a photo message",
+      "webhookId": "7dfc4d67-5909-4cae-9b3c-9de2aeab226f",
+      "credentials": {
+        "telegramApi": {
+          "id": "A126BrNHPHDyMyfZ",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Get Picture Links from Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Picture": {
+      "main": [
+        [
+          {
+            "node": "Generate Post with Gemini",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge Ad Copy with Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Post with Gemini",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process One Image Only": {
+      "main": [
+        [
+          {
+            "node": "Download Picture",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Picture Links from Sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter Out Posted Images",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Out Posted Images": {
+      "main": [
+        [
+          {
+            "node": "Process One Image Only",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Ad Copy with Image": {
+      "main": [
+        [
+          {
+            "node": "Create Tweet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post to Facebook": {
+      "main": [
+        [
+          {
+            "node": "Post to Instagram via Blotoato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post to Instagram via Blotoato": {
+      "main": [
+        [
+          {
+            "node": "Send a photo message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Post with Gemini": {
+      "main": [
+        [
+          {
+            "node": "Mark Ad as Generated",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark Ad as Generated": {
+      "main": [
+        [
+          {
+            "node": "Merge Ad Copy with Image",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Create Tweet": {
+      "main": [
+        [
+          {
+            "node": "Post to Facebook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a photo message": {
+      "main": [
+        [
+          {
+            "node": "Mark as Posted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "84a291ae-19b1-4455-a11d-b6c32774fbac",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "662445dbfe7023d2b0c5339c3851163c037d6fa182760c5a6711fdfea933a9bb"
+  },
+  "id": "f1U3BZMwbnlerzQ0",
+  "tags": []
+}
