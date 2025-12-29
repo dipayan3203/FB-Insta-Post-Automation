@@ -1,4 +1,4 @@
-# FB-Insta-Post-Automation
+
 # FB & Insta Post Automation
 
 An automated n8n workflow that generates AI-powered social media content for Facebook, Instagram, Twitter/X, and Telegram. The workflow uses Google Gemini to create festival-themed advertisements for Indian ethnic wear, complete with engaging copy and strategic hashtags.
